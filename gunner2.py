@@ -10,10 +10,10 @@ pygame.display.set_caption('Shooter')
 clock = pygame.time.Clock()
 
 font  = pygame.font.Font('ofont.ru_Gnocchi.ttf', 20)
-big_font = pygame.font.Font('ofont.ru_Gnocchi.ttf', 40)
+big_font = pygame.font.Font('ofont.ru_Gnocchi.ttf', 60)
 
 player = pygame.Rect(370, 520, 60, 60)
-player_image = pygame.image.load("assset1/images/player.png/500px-Donald_Trump_August_2015.jpg").convert()
+player_image = pygame.image.load("assset1/images/player.png/Grenadepenguin (1).png").convert()
 player_image = pygame.transform.scale(player_image, (60, 60))
 player_speed = 3
 
@@ -43,6 +43,20 @@ except:
     jump_sound = None
 
 
+try:
+    death_song = pygame.mixer.Sound('assset1/sound1/bg_music.wav/SPALEXMA_-_We_Are_Charlie_Kirk_80558278.mp3')
+except:
+    death_song = None
+
+
+try:
+    victory_song = pygame.mixer.Sound('assset1/sound1/bg_music.wav/George_Thorogood_-_Bad_To_The_Bone_47975022.mp3')
+except:
+    victory_song = None
+
+
+
+
 score = 0
 game_over = False
 
@@ -54,11 +68,39 @@ on_ground = True
 GROUND_Y = 520
 
 
-BG = pygame.image.load("assset1/images/tiles.png/Flag_of_Iran.svg.png").convert()
+BG = pygame.image.load("assset1/images/bg.png/beautiful-desert-landscape_23-2150787920.jpg").convert()
 BG = pygame.transform.scale(BG, (WIDTH, HEIGHT))
 
-MENU = pygame.image.load("assset1/images/bg.png/mygamemenu.png").convert()
+VICTORY = pygame.image.load("assset1/images/bg.png/1167054-bright-yellow-backgrounds-1920x1080-for-mobile.jpg").convert()
+VICTORY = pygame.transform.scale(VICTORY, (WIDTH, HEIGHT))
+
+
+DEFEAT = pygame.image.load("assset1/images/bg.png/images.jfif").convert()
+DEFEAT = pygame.transform.scale(DEFEAT, (WIDTH, HEIGHT))
+
+MENU = pygame.image.load("assset1/images/bg.png/2e21da019a068e326d1c85adb4601285.webp").convert()
 MENU = pygame.transform.scale(MENU, (WIDTH, HEIGHT))
+
+
+def menu():
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                return
+            if MENU: screen.fill((255, 255, 255))
+            title1 = big_font.render("The Infinite War", True, (205, 0, 20))
+            title2 = big_font.render("PRESS ENTER TO START!", True, (205, 2, 0))
+
+            screen.blit(title1, title1.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 140)))
+            screen.blit(title2, title2.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 40)))
+            pygame.display.update()
+            clock.tick(60)
+
+
+
 
 
 def reset_game():
@@ -68,6 +110,7 @@ def reset_game():
     enemies = []
     score = 0
     game_over = False
+
     player.x = 370
     player.y = 520
 
@@ -83,7 +126,9 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_m and not game_over:
-                bullet = pygame.Rect(player.right, player.centery - 5, 10, 20)
+                bullet = pygame.Rect(player.right, player.centery - 5, 20, 20)
+                bullet_image = pygame.image.load("assset1/images/tiles.png/tile_0127.png").convert()
+                bullet_image = pygame.transform.scale(bullet_image, (20, 20))
                 bullets.append(bullet)
                 if hit_sound: hit_sound.play()
 
@@ -142,8 +187,10 @@ while running:
         enemy_timer += 1
         if enemy_timer >= 45:
             enemy_timer = 0
-            y = random.randint(0, HEIGHT - 40)
+            y = random.randint(0, HEIGHT - 60)
             enemy = pygame.Rect(WIDTH, y, 40, 40)
+            enemy_image = pygame.image.load("assset1/images/enemy.png/Hard.webp").convert()
+            enemy_image = pygame.transform.scale(enemy_image, (40, 40))
             enemies.append(enemy)
 
 
@@ -166,26 +213,44 @@ while running:
                     break
 
 
+
+
     screen.blit(BG, (0, 0))
 
     pygame.draw.rect(screen, (0, 0, 0), (player.x, player.y, player.height, player.width))
     screen.blit(player_image, (player.x, player.y))
 
     for b in bullets:
-        pygame.draw.rect(screen, (0, 0, 0), b)
+        pygame.draw.rect(screen, (0, 0, 0), (b.x, b.y, 20, 20))
+        screen.blit(bullet_image, (b.x, b.y))
 
     for e in enemies:
-        pygame.draw.rect(screen, (128, 0, 0), e)
+        pygame.draw.rect(screen, (128, 0, 0), (e.x, e.y, e.width, e.height))
+        screen.blit(enemy_image, (e.x, e.y))
 
-    screen.blit(font.render(f"SCORE: {score}", True, (255, 0, 255)), (100, 100))
+    screen.blit(font.render(f"SCORE: {score}", True, (128, 0, 0)), (100, 100))
+
+
+
+    if score >= 15:
+        running = False
+        screen.blit(VICTORY, (0, 0))
+        hap = big_font.render("YOU WON!", True, (255, 0, 128))
+        hap1 = big_font.render("Enough enemies defeated :D", True, (0, 128, 255))
+        screen.blit(hap, hap.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 200)))
+        screen.blit(hap1, hap1.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 200)))
+        if victory_song: victory_song.play()
+
 
 
     if game_over:
-        t1 = big_font.render("GAME OVER", True, (0, 0, 255))
-        t2 = big_font.render("PRESS R TO RESTART", True, (205, 2, 205))
+        screen.blit(DEFEAT, (0, 0))
+        t1 = big_font.render("GAME OVER.", True, (205, 0, 20))
+        t2 = big_font.render("PRESS R TO RESTART!", True, (205, 2, 0))
 
-        screen.blit(t1, t1.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 20)))
-        screen.blit(t2, t2.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 20)))
+        screen.blit(t1, t1.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 140)))
+        screen.blit(t2, t2.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 40)))
+        if death_song: death_song.play()
 
 
     pygame.display.flip()
