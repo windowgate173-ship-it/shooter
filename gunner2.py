@@ -13,7 +13,7 @@ font  = pygame.font.Font('ofont.ru_Gnocchi.ttf', 20)
 big_font = pygame.font.Font('ofont.ru_Gnocchi.ttf', 60)
 
 player = pygame.Rect(370, 520, 60, 60)
-player_image = pygame.image.load("assset1/images/player.png/Grenadepenguin (1).png").convert()
+player_image = pygame.image.load("Grenadepenguin (1).png").convert()
 player_image = pygame.transform.scale(player_image, (60, 60))
 player_speed = 3
 
@@ -27,30 +27,30 @@ enemy_timer = 0
 
 
 pygame.mixer.init()
-pygame.mixer.music.load("assset1/sound1/bg_music.wav/02. Crazy Dave (Intro Theme).mp3")
+pygame.mixer.music.load("02. Crazy Dave (Intro Theme).mp3")
 pygame.mixer.music.play(-1)
 pygame.mixer.music.set_volume(0.3)
 
 try:
-    hit_sound = pygame.mixer.Sound('assset1/sound1/hit.wav/mixkit-metal-hammer-hit-833.wav')
+    hit_sound = pygame.mixer.Sound('mixkit-metal-hammer-hit-833.wav')
 except:
     hit_sound = None
 
 
 try:
-    jump_sound = pygame.mixer.Sound('assset1/sound1/jump.wav/Voicy_Sonic-Jump-Sound.wav')
+    jump_sound = pygame.mixer.Sound('Voicy_Sonic-Jump-Sound.wav')
 except:
     jump_sound = None
 
 
 try:
-    death_song = pygame.mixer.Sound('assset1/sound1/bg_music.wav/SPALEXMA_-_We_Are_Charlie_Kirk_80558278.mp3')
+    death_song = pygame.mixer.Sound('SPALEXMA_-_We_Are_Charlie_Kirk_80558278.mp3')
 except:
     death_song = None
 
 
 try:
-    victory_song = pygame.mixer.Sound('assset1/sound1/bg_music.wav/George_Thorogood_-_Bad_To_The_Bone_47975022.mp3')
+    victory_song = pygame.mixer.Sound('George_Thorogood_-_Bad_To_The_Bone_47975022.mp3')
 except:
     victory_song = None
 
@@ -68,17 +68,17 @@ on_ground = True
 GROUND_Y = 520
 
 
-BG = pygame.image.load("assset1/images/bg.png/beautiful-desert-landscape_23-2150787920.jpg").convert()
+BG = pygame.image.load("beautiful-desert-landscape_23-2150787920.jpg").convert()
 BG = pygame.transform.scale(BG, (WIDTH, HEIGHT))
 
-VICTORY = pygame.image.load("assset1/images/bg.png/1167054-bright-yellow-backgrounds-1920x1080-for-mobile.jpg").convert()
+VICTORY = pygame.image.load("1167054-bright-yellow-backgrounds-1920x1080-for-mobile.jpg").convert()
 VICTORY = pygame.transform.scale(VICTORY, (WIDTH, HEIGHT))
 
 
-DEFEAT = pygame.image.load("assset1/images/bg.png/images.jfif").convert()
+DEFEAT = pygame.image.load("images.jfif").convert()
 DEFEAT = pygame.transform.scale(DEFEAT, (WIDTH, HEIGHT))
 
-MENU = pygame.image.load("assset1/images/bg.png/2e21da019a068e326d1c85adb4601285.webp").convert()
+MENU = pygame.image.load("2e21da019a068e326d1c85adb4601285.webp").convert()
 MENU = pygame.transform.scale(MENU, (WIDTH, HEIGHT))
 
 
@@ -127,7 +127,7 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_m and not game_over:
                 bullet = pygame.Rect(player.right, player.centery - 5, 20, 20)
-                bullet_image = pygame.image.load("assset1/images/tiles.png/tile_0127.png").convert()
+                bullet_image = pygame.image.load("tile_0127.png").convert()
                 bullet_image = pygame.transform.scale(bullet_image, (20, 20))
                 bullets.append(bullet)
                 if hit_sound: hit_sound.play()
@@ -189,7 +189,7 @@ while running:
             enemy_timer = 0
             y = random.randint(0, HEIGHT - 60)
             enemy = pygame.Rect(WIDTH, y, 40, 40)
-            enemy_image = pygame.image.load("assset1/images/enemy.png/Hard.webp").convert()
+            enemy_image = pygame.image.load("Hard.webp").convert()
             enemy_image = pygame.transform.scale(enemy_image, (40, 40))
             enemies.append(enemy)
 
@@ -233,7 +233,7 @@ while running:
 
 
     if score >= 15:
-        running = False
+
         screen.blit(VICTORY, (0, 0))
         hap = big_font.render("YOU WON!", True, (255, 0, 128))
         hap1 = big_font.render("Enough enemies defeated :D", True, (0, 128, 255))
